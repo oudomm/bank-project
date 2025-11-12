@@ -3,8 +3,11 @@ package dev.oudom.accountservice.service;
 import dev.oudom.accountservice.constant.AccountConstants;
 import dev.oudom.accountservice.domain.Account;
 import dev.oudom.accountservice.domain.Customer;
+import dev.oudom.accountservice.dto.AccountDto;
 import dev.oudom.accountservice.dto.CustomerDto;
 import dev.oudom.accountservice.exception.CustomerAlreadyExistsException;
+import dev.oudom.accountservice.exception.ResourceNotFoundException;
+import dev.oudom.accountservice.mapper.AccountMapper;
 import dev.oudom.accountservice.mapper.CustomerMapper;
 import dev.oudom.accountservice.repository.AccountRepository;
 import dev.oudom.accountservice.repository.CustomerRepository;
@@ -60,5 +63,20 @@ public class AccountServiceImpl implements AccountService {
         newAccount.setCreatedAt(LocalDateTime.now());
         newAccount.setCreatedBy("Anonymous");
         return newAccount;
+    }
+
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                        .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        Account account = accountRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "customerId", customer.getId().toString()));
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountDto(AccountMapper.mapToAccountDto(account, new AccountDto()));
+
+        return customerDto;
     }
 }

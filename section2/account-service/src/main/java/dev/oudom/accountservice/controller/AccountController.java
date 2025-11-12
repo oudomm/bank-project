@@ -25,4 +25,14 @@ public class AccountController {
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountConstants.STATUS_201, AccountConstants.MESSAGE_201));
     }
+
+    @GetMapping
+    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam String mobileNumber) {
+
+        CustomerDto customerdto = accountService.fetchAccount(mobileNumber);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerdto);
+    }
 }
