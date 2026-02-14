@@ -1,4 +1,4 @@
-package dev.oudom.accountservice.domain;
+package dev.oudom.accountservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

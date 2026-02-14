@@ -1,6 +1,6 @@
 package dev.oudom.accountservice.repository;
 
-import dev.oudom.accountservice.domain.Customer;
+import dev.oudom.accountservice.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

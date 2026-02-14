@@ -1,6 +1,6 @@
 package dev.oudom.accountservice.mapper;
 
-import dev.oudom.accountservice.domain.Customer;
+import dev.oudom.accountservice.entity.Customer;
 import dev.oudom.accountservice.dto.CustomerDto;
 
 public class CustomerMapper {

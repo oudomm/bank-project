@@ -1,8 +1,8 @@
 package dev.oudom.accountservice.service;
 
 import dev.oudom.accountservice.constant.AccountConstants;
-import dev.oudom.accountservice.domain.Account;
-import dev.oudom.accountservice.domain.Customer;
+import dev.oudom.accountservice.entity.Account;
+import dev.oudom.accountservice.entity.Customer;
 import dev.oudom.accountservice.dto.AccountDto;
 import dev.oudom.accountservice.dto.CustomerDto;
 import dev.oudom.accountservice.exception.CustomerAlreadyExistsException;
@@ -13,6 +13,7 @@ import dev.oudom.accountservice.repository.AccountRepository;
 import dev.oudom.accountservice.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -87,12 +88,9 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public boolean updateAccount(CustomerDto customerDto) {
-
         boolean isUpdated = false;
-
         AccountDto accountDto = customerDto.getAccountDto();
         if (accountDto != null) {
-
             Account account = accountRepository.findById(accountDto.getAccountNumber())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Account",
@@ -100,19 +98,31 @@ public class AccountServiceImpl implements AccountService {
                             accountDto.getAccountNumber().toString()
                     )
             );
-
             AccountMapper.mapToAccount(accountDto, account);
             account = accountRepository.save(account);
 
             Long customerId = account.getCustomerId();
             Customer customer = customerRepository.findById(customerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Customer", "CustomerId", customerId.toString()));
-
             CustomerMapper.mapToCustomer(customerDto, customer);
             customerRepository.save(customer);
             isUpdated = true;
         }
-
         return isUpdated;
+    }
+
+    /**
+     *
+     * @param mobileNumber - Input Mobile Number
+     * @return boolean indicating if the delete of Account details is successful or not
+     */
+    @Override
+    @Transactional
+    public boolean deleteAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "MobileNumber", mobileNumber));
+        accountRepository.deleteByCustomerId(customer.getId());
+        customerRepository.deleteById(customer.getId());
+        return true;
     }
 }
