@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17.5-bullseye
+    container_name: account-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: account_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - account_db_data:/var/lib/postgresql/data
+
+volumes:
+  account_db_data:
