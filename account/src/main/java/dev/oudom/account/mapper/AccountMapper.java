@@ -1,6 +1,7 @@
 package dev.oudom.account.mapper;
 
 import dev.oudom.account.domain.Account;
+import dev.oudom.account.dto.AccountResponse;
 import dev.oudom.account.dto.CreateAccountRequest;
 import dev.oudom.account.dto.CreateAccountResponse;
 import org.mapstruct.Mapper;
@@ -14,4 +15,5 @@ public interface AccountMapper {
     @Mapping(source = "customer.id", target = "customerId")
     CreateAccountResponse accountToCreateAccountResponse(Account account);
 
+    AccountResponse accountToAccountResponse(Account account);
 }

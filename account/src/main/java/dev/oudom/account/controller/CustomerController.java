@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,6 +40,15 @@ public class CustomerController {
         ApiResponse<CreateAccountResponse> response = new ApiResponse<>(createAccountResponse);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @GetMapping("/{customerId}/accounts")
+    public ResponseEntity<ApiResponse<List<AccountResponse>>> getAllAccounts(@PathVariable UUID customerId) {
+        List<AccountResponse> accountResponses = accountService.getAllAccounts(customerId);
+        ApiResponse<List<AccountResponse>> response = new ApiResponse<>(accountResponses);
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(response);
     }
 

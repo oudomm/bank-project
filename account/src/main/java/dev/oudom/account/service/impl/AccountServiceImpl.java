@@ -2,6 +2,7 @@ package dev.oudom.account.service.impl;
 
 import dev.oudom.account.domain.Account;
 import dev.oudom.account.domain.Customer;
+import dev.oudom.account.dto.AccountResponse;
 import dev.oudom.account.dto.CreateAccountRequest;
 import dev.oudom.account.dto.CreateAccountResponse;
 import dev.oudom.account.mapper.AccountMapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -42,6 +44,15 @@ public class AccountServiceImpl implements AccountService {
         account.setCreatedBy("System");
         Account savedAccount = accountRepository.save(account);
         return accountMapper.accountToCreateAccountResponse(savedAccount);
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccounts(UUID customerId) {
+        if (!customerRepository.existsById(customerId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer does not exist");
+        }
+        List<Account> accounts = accountRepository.findByCustomerId(customerId);
+        return accounts.stream().map(accountMapper::accountToAccountResponse).toList();
     }
 
     private Long generateAccountNumber() {
