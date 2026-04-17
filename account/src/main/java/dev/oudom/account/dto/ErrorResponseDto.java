@@ -3,11 +3,13 @@ package dev.oudom.account.dto;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public record ErrorResponseDto(
         String apiPath,
         HttpStatus errorCode,
         String errorMessage,
-        LocalDateTime errorTime
+        LocalDateTime errorTime,
+        Map<String, String> validationErrors
 ) {
 }
