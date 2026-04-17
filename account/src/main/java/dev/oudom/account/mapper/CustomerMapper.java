@@ -1,13 +1,14 @@
 package dev.oudom.account.mapper;
 
 import dev.oudom.account.domain.Customer;
-import dev.oudom.account.dto.CustomerDto;
+import dev.oudom.account.dto.CreateCustomerRequest;
+import dev.oudom.account.dto.CreateCustomerResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
-    CustomerDto customerToCustomerDto(Customer customer);
+    Customer createCustomerRequestToCustomer(CreateCustomerRequest createCustomerRequest);
 
-    Customer customerDtoToCustomer(CustomerDto customerDto);
+    CreateCustomerResponse customerToCreateCustomerResponse(Customer customer);
 }

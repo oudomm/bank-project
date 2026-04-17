@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,12 +16,18 @@ import lombok.Setter;
 public class Customer extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    private Long customerId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String email;
 
-    private String mobileNumber;
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Account> accounts;
 }

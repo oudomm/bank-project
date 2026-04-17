@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,13 +14,16 @@ import lombok.Setter;
 @Table(name = "accounts")
 public class Account extends BaseEntity {
 
-    private Long customerId;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false)
     private Long accountNumber;
 
+    @Column(nullable = false)
     private String accountType;
 
-    private String branchAddress;
-
+    @ManyToOne
+    private Customer customer;
 }

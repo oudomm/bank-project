@@ -3,6 +3,6 @@ package dev.oudom.account.service;
 import dev.oudom.account.dto.CreateCustomerRequest;
 import dev.oudom.account.dto.CreateCustomerResponse;
 
-public interface AccountService {
-    CreateCustomerResponse createAccount(CreateCustomerRequest createCustomerRequest);
+public interface CustomerService {
+    CreateCustomerResponse createCustomer(CreateCustomerRequest createCustomerRequest);
 }
