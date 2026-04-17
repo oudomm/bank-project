@@ -1,8 +1,10 @@
 package dev.oudom.account.service;
 
-import dev.oudom.account.dto.CreateCustomerRequest;
-import dev.oudom.account.dto.CreateCustomerResponse;
+import dev.oudom.account.dto.CreateAccountRequest;
+import dev.oudom.account.dto.CreateAccountResponse;
+
+import java.util.UUID;
 
 public interface AccountService {
-    CreateCustomerResponse createAccount(CreateCustomerRequest createCustomerRequest);
+    CreateAccountResponse createAccount(UUID customerId, CreateAccountRequest createAccountRequest);
 }
