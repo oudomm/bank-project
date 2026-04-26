@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.UUID;
 
-@Schema(name = "CreateCustomerResponse", description = "Created customer profile details")
-public record CreateCustomerResponse(
+@Schema(name = "CustomerResponse", description = "Customer profile details")
+public record CustomerResponse(
         @Schema(description = "Customer id")
         UUID id,
         @Schema(description = "Customer full name", example = "Oudom Dara")

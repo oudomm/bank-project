@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-@Schema(name = "CreateCustomerRequest", description = "Request to create a customer profile")
-public record CreateCustomerRequest(
+@Schema(name = "UpdateCustomerRequest", description = "Request to update customer profile details")
+public record UpdateCustomerRequest(
         @Schema(description = "Customer full name", example = "Oudom Dara")
         @NotBlank(message = "Name must not be blank")
         @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
