@@ -1,0 +1,374 @@
+{
+  "info": {
+    "name": "Bank Microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "customer_base_url", "value": "http://localhost:8081" },
+    { "key": "account_base_url",  "value": "http://localhost:8080" },
+    { "key": "card_base_url",     "value": "http://localhost:8082" },
+    { "key": "loan_base_url",     "value": "http://localhost:8083" },
+    { "key": "customer_id",       "value": "" },
+    { "key": "account_id",        "value": "" },
+    { "key": "card_id",           "value": "" },
+    { "key": "loan_id",           "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Customer Service",
+      "item": [
+        {
+          "name": "Create Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('customer_id', pm.response.json().data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{customer_base_url}}/api/v1/customers", "host": ["{{customer_base_url}}"], "path": ["api", "v1", "customers"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+85512345678\",\n  \"address\": \"123 Main St, Phnom Penh\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Customer by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{customer_base_url}}/api/v1/customers/{{customer_id}}", "host": ["{{customer_base_url}}"], "path": ["api", "v1", "customers", "{{customer_id}}"] }
+          }
+        },
+        {
+          "name": "Get Customer by Email",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{customer_base_url}}/api/v1/customers?email=john.doe@example.com",
+              "host": ["{{customer_base_url}}"],
+              "path": ["api", "v1", "customers"],
+              "query": [{ "key": "email", "value": "john.doe@example.com" }]
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{customer_base_url}}/api/v1/customers/{{customer_id}}", "host": ["{{customer_base_url}}"], "path": ["api", "v1", "customers", "{{customer_id}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"phone\": \"+85598765432\",\n  \"address\": \"456 New St, Phnom Penh\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{customer_base_url}}/api/v1/customers/{{customer_id}}", "host": ["{{customer_base_url}}"], "path": ["api", "v1", "customers", "{{customer_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account Service",
+      "item": [
+        {
+          "name": "Create Account (SAVINGS)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('account_id', pm.response.json().data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"accountType\": \"SAVINGS\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Account (CHECKING)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"accountType\": \"CHECKING\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Account by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts/{{account_id}}", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts", "{{account_id}}"] }
+          }
+        },
+        {
+          "name": "Get Accounts by Customer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{account_base_url}}/api/v1/accounts?customerId={{customer_id}}",
+              "host": ["{{account_base_url}}"],
+              "path": ["api", "v1", "accounts"],
+              "query": [{ "key": "customerId", "value": "{{customer_id}}" }]
+            }
+          }
+        },
+        {
+          "name": "Update Account",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts/{{account_id}}", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts", "{{account_id}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountType\": \"CHECKING\",\n  \"status\": \"ACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deposit",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts/{{account_id}}/deposit", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts", "{{account_id}}", "deposit"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1000.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Withdraw",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts/{{account_id}}/withdraw", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts", "{{account_id}}", "withdraw"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 250.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Close Account",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{account_base_url}}/api/v1/accounts/{{account_id}}", "host": ["{{account_base_url}}"], "path": ["api", "v1", "accounts", "{{account_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Card Service",
+      "item": [
+        {
+          "name": "Issue Debit Card",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('card_id', pm.response.json().data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{card_base_url}}/api/v1/cards", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"cardType\": \"DEBIT\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Issue Credit Card",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{card_base_url}}/api/v1/cards", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"cardType\": \"CREDIT\",\n  \"creditLimit\": 5000.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Card by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{card_base_url}}/api/v1/cards/{{card_id}}", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards", "{{card_id}}"] }
+          }
+        },
+        {
+          "name": "Get Cards by Customer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{card_base_url}}/api/v1/cards?customerId={{customer_id}}",
+              "host": ["{{card_base_url}}"],
+              "path": ["api", "v1", "cards"],
+              "query": [{ "key": "customerId", "value": "{{customer_id}}" }]
+            }
+          }
+        },
+        {
+          "name": "Update Credit Limit",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{card_base_url}}/api/v1/cards/{{card_id}}/credit-limit", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards", "{{card_id}}", "credit-limit"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"creditLimit\": 10000.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Block Card",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{card_base_url}}/api/v1/cards/{{card_id}}/block", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards", "{{card_id}}", "block"] }
+          }
+        },
+        {
+          "name": "Unblock Card",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{card_base_url}}/api/v1/cards/{{card_id}}/unblock", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards", "{{card_id}}", "unblock"] }
+          }
+        },
+        {
+          "name": "Cancel Card",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{card_base_url}}/api/v1/cards/{{card_id}}", "host": ["{{card_base_url}}"], "path": ["api", "v1", "cards", "{{card_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Loan Service",
+      "item": [
+        {
+          "name": "Apply for Loan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('loan_id', pm.response.json().data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"loanType\": \"PERSONAL\",\n  \"principalAmount\": 10000.00,\n  \"interestRate\": 7.50,\n  \"termMonths\": 24\n}"
+            }
+          }
+        },
+        {
+          "name": "Apply for Home Loan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"loanType\": \"HOME\",\n  \"principalAmount\": 150000.00,\n  \"interestRate\": 4.25,\n  \"termMonths\": 360\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Loan by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans/{{loan_id}}", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans", "{{loan_id}}"] }
+          }
+        },
+        {
+          "name": "Get Loans by Customer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{loan_base_url}}/api/v1/loans?customerId={{customer_id}}",
+              "host": ["{{loan_base_url}}"],
+              "path": ["api", "v1", "loans"],
+              "query": [{ "key": "customerId", "value": "{{customer_id}}" }]
+            }
+          }
+        },
+        {
+          "name": "Approve Loan",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans/{{loan_id}}/approve", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans", "{{loan_id}}", "approve"] }
+          }
+        },
+        {
+          "name": "Make Repayment",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans/{{loan_id}}/repay", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans", "{{loan_id}}", "repay"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Close Loan",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans/{{loan_id}}/close", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans", "{{loan_id}}", "close"] }
+          }
+        },
+        {
+          "name": "Cancel Loan Application",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{loan_base_url}}/api/v1/loans/{{loan_id}}", "host": ["{{loan_base_url}}"], "path": ["api", "v1", "loans", "{{loan_id}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}

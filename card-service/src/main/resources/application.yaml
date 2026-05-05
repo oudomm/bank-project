@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: card
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:2018/card_db
+    username: bank_card
+    password: bank@168
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: 8082

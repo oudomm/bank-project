@@ -1,0 +1,72 @@
+name: bank-project
+
+services:
+  bank-customer:
+    image: postgres:16-alpine
+    container_name: bank-customer
+    restart: always
+    environment:
+      POSTGRES_DB: customer_db
+      POSTGRES_USER: bank_customer
+      POSTGRES_PASSWORD: bank@168
+    volumes:
+      - bank_customer_data:/var/lib/postgresql/data
+    ports:
+      - "2017:5432"
+    networks:
+      - bank-net
+
+  bank-account:
+    image: postgres:16-alpine
+    container_name: bank-account
+    restart: always
+    environment:
+      POSTGRES_DB: account_db
+      POSTGRES_USER: bank_account
+      POSTGRES_PASSWORD: bank@168
+    volumes:
+      - bank_account_data:/var/lib/postgresql/data
+    ports:
+      - "2016:5432"
+    networks:
+      - bank-net
+
+  bank-card:
+    image: postgres:16-alpine
+    container_name: bank-card
+    restart: always
+    environment:
+      POSTGRES_DB: card_db
+      POSTGRES_USER: bank_card
+      POSTGRES_PASSWORD: bank@168
+    volumes:
+      - bank_card_data:/var/lib/postgresql/data
+    ports:
+      - "2018:5432"
+    networks:
+      - bank-net
+
+  bank-loan:
+    image: postgres:16-alpine
+    container_name: bank-loan
+    restart: always
+    environment:
+      POSTGRES_DB: loan_db
+      POSTGRES_USER: bank_loan
+      POSTGRES_PASSWORD: bank@168
+    volumes:
+      - bank_loan_data:/var/lib/postgresql/data
+    ports:
+      - "2019:5432"
+    networks:
+      - bank-net
+
+volumes:
+  bank_customer_data:
+  bank_account_data:
+  bank_card_data:
+  bank_loan_data:
+
+networks:
+  bank-net:
+    driver: bridge

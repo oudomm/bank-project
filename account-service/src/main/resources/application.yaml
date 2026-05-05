@@ -1,17 +1,17 @@
-server:
-  port: 8081
 spring:
   application:
-    name: account-service
+    name: account
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/account_db
-    username: postgres
-    password: 123
+    url: jdbc:postgresql://localhost:2016/account_db
+    username: bank_account
+    password: bank@168
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
         format_sql: true
+server:
+  port: 8080
